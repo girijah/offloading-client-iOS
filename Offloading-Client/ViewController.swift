@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import Vision
+import BTE
 
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
@@ -25,6 +26,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         setupCaptureSession()
         
         view.addSubview(objectLabel)
+        
+        BTE.shared.hello()
         
     }
     

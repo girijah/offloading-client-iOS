@@ -1,0 +1,11 @@
+framework module BTE {
+  umbrella header "BTE.h"
+
+  export *
+  module * { export * }
+}
+
+module BTE.Swift {
+    header "BTE-Swift.h"
+    requires objc
+}
