@@ -12,7 +12,21 @@
 		1687DAE520A00E4A009AFC1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1687DAE320A00E4A009AFC1A /* Main.storyboard */; };
 		1687DAE720A00E4B009AFC1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1687DAE620A00E4B009AFC1A /* Assets.xcassets */; };
 		1687DAEA20A00E4B009AFC1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1687DAE820A00E4B009AFC1A /* LaunchScreen.storyboard */; };
+		1687DAF220A00F87009AFC1A /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1687DAF120A00F87009AFC1A /* Resnet50.mlmodel */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1687DAF720A00FF0009AFC1A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1687DADC20A00E4A009AFC1A /* Offloading-Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Offloading-Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,6 +36,7 @@
 		1687DAE620A00E4B009AFC1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1687DAE920A00E4B009AFC1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1687DAEB20A00E4B009AFC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1687DAF120A00F87009AFC1A /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				1687DADF20A00E4A009AFC1A /* AppDelegate.swift */,
+				1687DAF120A00F87009AFC1A /* Resnet50.mlmodel */,
 				1687DAE120A00E4A009AFC1A /* ViewController.swift */,
 				1687DAE320A00E4A009AFC1A /* Main.storyboard */,
 				1687DAE620A00E4B009AFC1A /* Assets.xcassets */,
@@ -74,6 +90,7 @@
 				1687DAD820A00E4A009AFC1A /* Sources */,
 				1687DAD920A00E4A009AFC1A /* Frameworks */,
 				1687DADA20A00E4A009AFC1A /* Resources */,
+				1687DAF720A00FF0009AFC1A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1687DAE220A00E4A009AFC1A /* ViewController.swift in Sources */,
+				1687DAF220A00F87009AFC1A /* Resnet50.mlmodel in Sources */,
 				1687DAE020A00E4A009AFC1A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,12 +300,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 48GC2PXZGE;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Offloading-Client",
+				);
 				INFOPLIST_FILE = "Offloading-Client/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.coresparker.Offloading-Client";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coresparker.goinon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -300,12 +323,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 48GC2PXZGE;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Offloading-Client",
+				);
 				INFOPLIST_FILE = "Offloading-Client/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.coresparker.Offloading-Client";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coresparker.goinon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
