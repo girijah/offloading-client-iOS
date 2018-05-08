@@ -20,9 +20,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeRight))
-        swipeRightGesture.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(swipeRightGesture)
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeLeft))
+        swipeLeftGesture.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeftGesture)
         
         let xib = UINib.init(nibName: "TaskTableViewCell", bundle: nil)
         self.tasksTableView.register(xib, forCellReuseIdentifier: "taskCell")
@@ -34,7 +34,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tasksTableView.reloadData()
     }
 
-    @objc func respondToSwipeRight(gesture: UIGestureRecognizer) {
+    @objc func respondToSwipeLeft(gesture: UIGestureRecognizer) {
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //        let controller = storyboard.instantiateViewController(withIdentifier: "Home")
 //        self.present(controller, animated: true, completion: nil)
