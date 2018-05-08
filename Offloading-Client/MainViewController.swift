@@ -10,11 +10,12 @@ import UIKit
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let kIS_OFFLOADING = "OFFLOADING"
     let tableViewTitles = ["Image Recognition"]
     @IBOutlet weak var networkButton: UIButton!
     
     @IBOutlet weak var tasksTableView: UITableView!
-    var isOffloadingEnabled: Bool!
+    var isOffloadingEnabled: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let xib = UINib.init(nibName: "TaskTableViewCell", bundle: nil)
         self.tasksTableView.register(xib, forCellReuseIdentifier: "taskCell")
     
+        isOffloadingEnabled = UserDefaults.standard.bool(forKey: kIS_OFFLOADING)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,6 +58,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.isOffloadingEnabled = false
         }
         
+        UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
+
         self.tasksTableView.reloadData()
     }
     
@@ -106,6 +110,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         
+        UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
+
         return cell
     }
     

@@ -58,9 +58,10 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if let settingsView = segue.destination as? MainViewController {
+//        let mainViewController = segue.destination as! MainViewController
+//            mainViewController.
 //            print("")
-//        }
+        
     }
     
     func setupCaptureSession() {
