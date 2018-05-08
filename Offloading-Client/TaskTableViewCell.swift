@@ -23,21 +23,4 @@ class TaskTableViewCell: UITableViewCell {
 
     }
     
-//    @IBAction func switchValueChanged(_ sender: UISwitch) {
-//        switchOnChange()
-//    }
-//
-//    @IBAction func switchTapped(_ sender: UISwitch) {
-//        switchOnChange()
-//    }
-//
-//    func switchOnChange() {
-//        if self.switchControl.isOn {
-//            self.statusLabel.text = "Remote Execution: ON"
-//        }
-//        else {
-//            self.statusLabel.text = "Remote Execution: OFF \t \t Local Execution"
-//        }
-//    }
-    
 }

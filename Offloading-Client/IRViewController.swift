@@ -20,7 +20,7 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     private let endPoint = "http://192.168.43.41:8181/recognizeImage"
     private let urlSession = URLSession.shared
     
-    var switcher = 2   // 1 - Local Execution, 2 - Remote Execution
+    var switcher = 0   // 1 - Local Execution, 2 - Remote Execution, 0 - Not yet set
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +113,7 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
             
         }
-        else {
+        else if switcher == 2 {
 //            var stringSampleBuffer = ""
 //
 //            do {
@@ -181,7 +181,20 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
 //            dataTask.resume()
             
         }
+        else {
+            // pop up undefined error
+            self.popUpTaskExecutionUndefinedErrorMessage()
+        }
         
+    }
+    
+    func popUpTaskExecutionUndefinedErrorMessage() {
+        let alertController = UIAlertController(title: "Task Execution", message: "Selection undefined!", preferredStyle: .alert)
+        let cancelAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (UIAlertAction) in
+            print("Selection undefined!")
+        })
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
 }
