@@ -11,11 +11,16 @@ import UIKit
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let kIS_OFFLOADING = "OFFLOADING"
-    let tableViewTitles = ["Image Recognition"]
+    let kIS_MANUAL_DECISION = "MANUAL DECISION"
+    
+    let tableViewSectionTitles = ["Offloading Settings", "Task Execution"]
+    let tableViewFirstSectionTitles = ["Image Recognition"]
+    let tableViewSecondSectionTitles = ["Manual/ Automatic"]
     @IBOutlet weak var networkButton: UIButton!
     
     @IBOutlet weak var tasksTableView: UITableView!
     var isOffloadingEnabled: Bool = true
+    var isManualEnabled: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +33,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tasksTableView.register(xib, forCellReuseIdentifier: "taskCell")
     
         isOffloadingEnabled = UserDefaults.standard.bool(forKey: kIS_OFFLOADING)
+        isManualEnabled = UserDefaults.standard.bool(forKey: kIS_MANUAL_DECISION)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,15 +57,25 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func switchOnChange(_ sender: UISwitch) {
-        if sender.isOn {
-            self.isOffloadingEnabled = true
+        if sender.tag == 0 {
+            if sender.isOn {
+                self.isManualEnabled = true
+            }
+            else {
+                self.isManualEnabled = false
+            }
+            UserDefaults.standard.set(isManualEnabled, forKey: kIS_MANUAL_DECISION)
         }
-        else {
-            self.isOffloadingEnabled = false
+        else if sender.tag == 1 {
+            if sender.isOn {
+                self.isOffloadingEnabled = true
+            }
+            else {
+                self.isOffloadingEnabled = false
+            }
+            UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
         }
         
-        UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
-
         self.tasksTableView.reloadData()
     }
     
@@ -81,37 +97,92 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             else if self.isOffloadingEnabled == false {
                 vc.switcher = 1
             }
-            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return tableViewSectionTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return tableViewSectionTitles.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if isManualEnabled == true {
+            return tableViewSectionTitles.count
+        }
+        else {
+            return 1
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewTitles.count
+        if section == 0 {
+            return tableViewFirstSectionTitles.count
+        }
+        else if section == 1 {
+            return tableViewSecondSectionTitles.count
+        }
+        else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
-        cell.taskLabel.text = tableViewTitles[indexPath.row]
         
-        if self.isOffloadingEnabled == true {
-            cell.statusLabel.text = "- Remote Execution"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
+        
+        if indexPath.section == 0 {
+            
+            cell.taskLabel.text = tableViewSecondSectionTitles[indexPath.row]
+            cell.switchControl.tag = indexPath.section
+            
+            if self.isManualEnabled == true {
+                cell.statusLabel.text = "Manual"
+            }
+            else if self.isManualEnabled == false {
+                cell.switchControl.isOn = false
+                cell.statusLabel.text = "Automatic"
+            }
+            else { // case: isOffloadingEnabled == nil
+                if cell.switchControl.isOn {
+                    self.isManualEnabled = true
+                    cell.statusLabel.text = "Manual"
+                }
+                else if cell.switchControl.isOn == false {
+                    self.isManualEnabled = false
+                    cell.statusLabel.text = "Automatic"
+                }
+            }
+            
+            UserDefaults.standard.set(isManualEnabled, forKey: kIS_MANUAL_DECISION)
         }
-        else if self.isOffloadingEnabled == false {
-            cell.switchControl.isOn = false
-            cell.statusLabel.text = "- Local Execution"
-        }
-        else { // case: isOffloadingEnabled == nil
-            if cell.switchControl.isOn {
-                self.isOffloadingEnabled = true
+        else if indexPath.section == 1 {
+            
+            cell.taskLabel.text = tableViewFirstSectionTitles[indexPath.row]
+            cell.switchControl.tag = indexPath.section
+            
+            if self.isOffloadingEnabled == true {
                 cell.statusLabel.text = "- Remote Execution"
             }
-            else if cell.switchControl.isOn == false {
-                self.isOffloadingEnabled = false
+            else if self.isOffloadingEnabled == false {
+                cell.switchControl.isOn = false
                 cell.statusLabel.text = "- Local Execution"
             }
+            else { // case: isOffloadingEnabled == nil
+                if cell.switchControl.isOn {
+                    self.isOffloadingEnabled = true
+                    cell.statusLabel.text = "- Remote Execution"
+                }
+                else if cell.switchControl.isOn == false {
+                    self.isOffloadingEnabled = false
+                    cell.statusLabel.text = "- Local Execution"
+                }
+            }
+            
+            UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
         }
-        
-        UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
 
         return cell
     }
