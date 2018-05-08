@@ -97,6 +97,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.statusLabel.text = "- Remote Execution"
         }
         else if self.isOffloadingEnabled == false {
+            cell.switchControl.isOn = false
             cell.statusLabel.text = "- Local Execution"
         }
         else { // case: isOffloadingEnabled == nil
