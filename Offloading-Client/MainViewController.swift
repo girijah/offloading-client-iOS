@@ -10,8 +10,8 @@ import UIKit
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let kIS_OFFLOADING = "OFFLOADING"
-    let kIS_MANUAL_DECISION = "MANUAL DECISION"
+    static let kIS_OFFLOADING = "OFFLOADING"
+    static let kIS_MANUAL_DECISION = "MANUAL DECISION"
     
     let tableViewSectionTitles = ["Offloading Settings", "Task Execution"]
     let tableViewFirstSectionTitles = ["Image Recognition"]
@@ -32,8 +32,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let xib = UINib.init(nibName: "TaskTableViewCell", bundle: nil)
         self.tasksTableView.register(xib, forCellReuseIdentifier: "taskCell")
     
-        isOffloadingEnabled = UserDefaults.standard.bool(forKey: kIS_OFFLOADING)
-        isManualEnabled = UserDefaults.standard.bool(forKey: kIS_MANUAL_DECISION)
+        isOffloadingEnabled = UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING)
+        isManualEnabled = UserDefaults.standard.bool(forKey: MainViewController.kIS_MANUAL_DECISION)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,7 +64,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             else {
                 self.isManualEnabled = false
             }
-            UserDefaults.standard.set(isManualEnabled, forKey: kIS_MANUAL_DECISION)
+            UserDefaults.standard.set(isManualEnabled, forKey: MainViewController.kIS_MANUAL_DECISION)
         }
         else if sender.tag == 1 {
             if sender.isOn {
@@ -73,7 +73,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             else {
                 self.isOffloadingEnabled = false
             }
-            UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
+            UserDefaults.standard.set(isOffloadingEnabled, forKey: MainViewController.kIS_OFFLOADING)
         }
         
         self.tasksTableView.reloadData()
@@ -156,7 +156,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
             
-            UserDefaults.standard.set(isManualEnabled, forKey: kIS_MANUAL_DECISION)
+            UserDefaults.standard.set(isManualEnabled, forKey: MainViewController.kIS_MANUAL_DECISION)
         }
         else if indexPath.section == 1 {
             
@@ -181,7 +181,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
             
-            UserDefaults.standard.set(isOffloadingEnabled, forKey: kIS_OFFLOADING)
+            UserDefaults.standard.set(isOffloadingEnabled, forKey: MainViewController.kIS_OFFLOADING)
         }
 
         return cell

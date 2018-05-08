@@ -39,6 +39,12 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         swipeTopGesture.direction = UISwipeGestureRecognizerDirection.up
         self.view.addGestureRecognizer(swipeTopGesture)
         
+        if UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING) == true {
+            self.switcher = 2
+        }
+        else if UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING) == false {
+            self.switcher = 1
+        }
     }
     
     @objc func respondToSwipeRight(gesture: UIGestureRecognizer) {
@@ -61,7 +67,6 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
 //        let mainViewController = segue.destination as! MainViewController
 //            mainViewController.
 //            print("")
-        
     }
     
     func setupCaptureSession() {
