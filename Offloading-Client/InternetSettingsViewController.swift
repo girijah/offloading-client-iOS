@@ -10,9 +10,9 @@ import UIKit
 
 class InternetSettingsViewController: UIViewController {
     
-    let kREMOTE_CONNECTIVITY_ENDPOINT = "/test"
-    let kIP_ADDRESS = "IP"
-    let kPORT = "PORT"
+    static let kREMOTE_CONNECTIVITY_ENDPOINT = "/test"
+    static let kIP_ADDRESS = "IP"
+    static let kPORT = "PORT"
     
     private let urlSession = URLSession.shared
     
@@ -37,8 +37,8 @@ class InternetSettingsViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector( viewTapped))
         self.view.addGestureRecognizer(tap)
         
-        ip = UserDefaults.standard.object(forKey: kIP_ADDRESS) as? String ?? ""
-        port = UserDefaults.standard.object(forKey: kPORT) as? String ?? ""
+        ip = UserDefaults.standard.object(forKey: InternetSettingsViewController.kIP_ADDRESS) as? String ?? ""
+        port = UserDefaults.standard.object(forKey: InternetSettingsViewController.kPORT) as? String ?? ""
         
         self.ipAddressTextField.text! = ip!
         self.portTextField.text! = port!
@@ -57,7 +57,7 @@ class InternetSettingsViewController: UIViewController {
     }
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
-        endPoint = "http://\(String(describing: ipAddressTextField.text!)):\(String(describing: portTextField.text!))\(kREMOTE_CONNECTIVITY_ENDPOINT)"
+        endPoint = "http://\(String(describing: ipAddressTextField.text!)):\(String(describing: portTextField.text!))\(InternetSettingsViewController.kREMOTE_CONNECTIVITY_ENDPOINT)"
         
         self.connectButton.setTitle("", for: UIControlState.normal)
         self.connectButton.loadingIndicator(true)
@@ -81,8 +81,8 @@ class InternetSettingsViewController: UIViewController {
         }
         
         // Successful endpoint saved to UserDefaults
-        UserDefaults.standard.set(ipAddressTextField.text!, forKey: kIP_ADDRESS)
-        UserDefaults.standard.set(portTextField.text!, forKey: kPORT)
+        UserDefaults.standard.set(ipAddressTextField.text!, forKey: InternetSettingsViewController.kIP_ADDRESS)
+        UserDefaults.standard.set(portTextField.text!, forKey: InternetSettingsViewController.kPORT)
         
         var webRequest = URLRequest(url: urlToExecute)
         webRequest.httpMethod = "POST"

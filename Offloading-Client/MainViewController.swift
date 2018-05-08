@@ -16,9 +16,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     let tableViewSectionTitles = ["Offloading Settings", "Task Execution"]
     let tableViewFirstSectionTitles = ["Image Recognition"]
     let tableViewSecondSectionTitles = ["Manual/ Automatic"]
-    @IBOutlet weak var networkButton: UIButton!
     
+    @IBOutlet weak var networkButton: UIButton!
     @IBOutlet weak var tasksTableView: UITableView!
+    
     var isOffloadingEnabled: Bool = true
     var isManualEnabled: Bool = true
     

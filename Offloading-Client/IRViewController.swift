@@ -17,7 +17,8 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     let ipAddress: String! = nil
     let port: Int! = nil
     
-    private let endPoint = "http://192.168.43.41:8181/recognizeImage"
+    private let kIR_ENDPOINT = "/recognizeImage"
+    var endPoint: String!
     private let urlSession = URLSession.shared
     
     var switcher = 0   // 1 - Local Execution, 2 - Remote Execution, 0 - Not yet set
@@ -48,28 +49,31 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         else if UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING) == false {
             self.switcher = 1
         }
+        
+        endPoint = "http://\(String(describing: UserDefaults.standard.value(forKey: InternetSettingsViewController.kIP_ADDRESS)!)):\(String(describing: UserDefaults.standard.value(forKey: InternetSettingsViewController.kPORT)!))\(kIR_ENDPOINT)"
+        print("The Image Recognition End point : ", endPoint!)
     }
     
     @objc func respondToSwipeRight(gesture: UIGestureRecognizer) {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let controller = storyboard.instantiateViewController(withIdentifier: "Settings")
-//        self.present(controller, animated: true, completion: nil)
+        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //        let controller = storyboard.instantiateViewController(withIdentifier: "Settings")
+        //        self.present(controller, animated: true, completion: nil)
         captureSession.stopRunning()
         performSegue(withIdentifier: "showMain", sender: nil)
     }
     
     @objc func respondToSwipeTop(gesture: UIGestureRecognizer) {
-//                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//                let controller = storyboard.instantiateViewController(withIdentifier: "Detail")
-//                self.present(controller, animated: true, completion: nil)
+        //                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //                let controller = storyboard.instantiateViewController(withIdentifier: "Detail")
+        //                self.present(controller, animated: true, completion: nil)
         
         performSegue(withIdentifier: "showDetail", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let mainViewController = segue.destination as! MainViewController
-//            mainViewController.
-//            print("")
+        //        let mainViewController = segue.destination as! MainViewController
+        //            mainViewController.
+        //            print("")
     }
     
     func setupCaptureSession() {
@@ -120,71 +124,51 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             
         }
         else if switcher == 2 {
-//            var stringSampleBuffer = ""
-//
-//            do {
-//
-//                // Object to JSON data
-//                let jsonData = try JSONSerialization.data(withJSONObject: sampleBuffer, options: JSONSerialization.WritingOptions.prettyPrinted)
-//
-//                print("This is JSON data: ", jsonData)
-//
-//                // JSON data to JSON string
-//                if let jsonString = String(data: jsonData, encoding: String.Encoding.utf8) {
-//                    stringSampleBuffer = jsonString
-//                    //socket.send(jsonString) // pass into a dictionary
-//                } else {
-//                    print("Couldn't create json string")
-//                }
-//
-//            } catch let error {
-//                print("Couldn't create json data: \(error)")
-//            }
-//
-//            print( "Is sample buffer a valid json object: ", JSONSerialization.isValidJSONObject(sampleBuffer) )
-//
-//            let parameters = ["bufferParameter" : stringSampleBuffer]
-//
-//            guard let urlToExecute = URL(string: endPoint) else {
-//                return
-//            }
-//
-//            var webRequest = URLRequest(url: urlToExecute)
-//            webRequest.httpMethod = "POST"
-//            webRequest.addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-type")
-//
-//            let urlParams =  parameters.compactMap {
-//                (key, value) -> String? in "\(key)=\(value)"
-//                }.joined(separator: "&")
-//
-//            webRequest.httpBody = urlParams.data(using: .utf8, allowLossyConversion: true)
-//
-//            let dataTask = urlSession.dataTask(with: webRequest) {
-//                (data, response, error) in
-//
-//                print("Response received from the server")
-//
-//                guard let data = data, let _ = response, error == nil else {
-//                    return
-//                }
-//
-//                do {
-//                    let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//                    guard let object = jsonResponse?["recognizedImage"] else {
-//                        return
-//                    }
-//
-//                    DispatchQueue.main.async {[unowned self] in
-//                        self.objectLabel.text = "\(object)"
-//
-//                    }
-//                }
-//                catch {
-//                    print (error.localizedDescription)
-//                }
-//            }
-//
-//            dataTask.resume()
+            
+            let stringSampleBuffer = "\(sampleBuffer)"
+            
+            let parameters = ["bufferParameter" : stringSampleBuffer]
+            
+            guard let urlToExecute = URL(string: endPoint!) else {
+                return
+            }
+            
+            var webRequest = URLRequest(url: urlToExecute)
+            webRequest.httpMethod = "POST"
+            webRequest.addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-type")
+            
+            let urlParams =  parameters.compactMap {
+                (key, value) -> String? in "\(key)=\(value)"
+                }.joined(separator: "&")
+            
+            webRequest.httpBody = urlParams.data(using: .utf8, allowLossyConversion: true)
+            
+            let dataTask = urlSession.dataTask(with: webRequest) {
+                (data, response, error) in
+                
+                print("Response received from the server")
+                
+                guard let data = data, let _ = response, error == nil else {
+                    return
+                }
+                
+                do {
+                    let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    guard let object = jsonResponse?["recognizedImage"] else {
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {[unowned self] in
+                        self.objectLabel.text = "\(object)"
+                        
+                    }
+                }
+                catch {
+                    print (error.localizedDescription)
+                }
+            }
+            
+            dataTask.resume()
         }
         else {
             // pop up undefined error
