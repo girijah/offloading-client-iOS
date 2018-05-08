@@ -8,13 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		1687DAE020A00E4A009AFC1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687DADF20A00E4A009AFC1A /* AppDelegate.swift */; };
-		1687DAE220A00E4A009AFC1A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687DAE120A00E4A009AFC1A /* ViewController.swift */; };
+		1687DAE220A00E4A009AFC1A /* IRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687DAE120A00E4A009AFC1A /* IRViewController.swift */; };
 		1687DAE520A00E4A009AFC1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1687DAE320A00E4A009AFC1A /* Main.storyboard */; };
 		1687DAE720A00E4B009AFC1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1687DAE620A00E4B009AFC1A /* Assets.xcassets */; };
 		1687DAEA20A00E4B009AFC1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1687DAE820A00E4B009AFC1A /* LaunchScreen.storyboard */; };
 		1687DAF220A00F87009AFC1A /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1687DAF120A00F87009AFC1A /* Resnet50.mlmodel */; };
 		1687DAFA20A01E40009AFC1A /* BTE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1687DAF820A01E26009AFC1A /* BTE.framework */; };
 		1687DAFB20A01E40009AFC1A /* BTE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1687DAF820A01E26009AFC1A /* BTE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1687DAFD20A02229009AFC1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687DAFC20A02229009AFC1A /* MainViewController.swift */; };
+		1687DAFF20A03B96009AFC1A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687DAFE20A03B96009AFC1A /* DetailViewController.swift */; };
+		16F290F720A058E5008E9F9C /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F290F520A058E5008E9F9C /* TaskTableViewCell.swift */; };
+		16F290F820A058E5008E9F9C /* TaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16F290F620A058E5008E9F9C /* TaskTableViewCell.xib */; };
+		16F290FA20A065CE008E9F9C /* InternetSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F290F920A065CE008E9F9C /* InternetSettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,13 +39,18 @@
 /* Begin PBXFileReference section */
 		1687DADC20A00E4A009AFC1A /* Offloading-Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Offloading-Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1687DADF20A00E4A009AFC1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1687DAE120A00E4A009AFC1A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1687DAE120A00E4A009AFC1A /* IRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRViewController.swift; sourceTree = "<group>"; };
 		1687DAE420A00E4A009AFC1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1687DAE620A00E4B009AFC1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1687DAE920A00E4B009AFC1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1687DAEB20A00E4B009AFC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1687DAF120A00F87009AFC1A /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 		1687DAF820A01E26009AFC1A /* BTE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BTE.framework; sourceTree = "<group>"; };
+		1687DAFC20A02229009AFC1A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		1687DAFE20A03B96009AFC1A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		16F290F520A058E5008E9F9C /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
+		16F290F620A058E5008E9F9C /* TaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskTableViewCell.xib; sourceTree = "<group>"; };
+		16F290F920A065CE008E9F9C /* InternetSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +86,12 @@
 			children = (
 				1687DADF20A00E4A009AFC1A /* AppDelegate.swift */,
 				1687DAF120A00F87009AFC1A /* Resnet50.mlmodel */,
-				1687DAE120A00E4A009AFC1A /* ViewController.swift */,
+				1687DAE120A00E4A009AFC1A /* IRViewController.swift */,
+				1687DAFC20A02229009AFC1A /* MainViewController.swift */,
+				1687DAFE20A03B96009AFC1A /* DetailViewController.swift */,
+				16F290F920A065CE008E9F9C /* InternetSettingsViewController.swift */,
+				16F290F520A058E5008E9F9C /* TaskTableViewCell.swift */,
+				16F290F620A058E5008E9F9C /* TaskTableViewCell.xib */,
 				1687DAE320A00E4A009AFC1A /* Main.storyboard */,
 				1687DAE620A00E4B009AFC1A /* Assets.xcassets */,
 				1687DAE820A00E4B009AFC1A /* LaunchScreen.storyboard */,
@@ -148,6 +163,7 @@
 				1687DAEA20A00E4B009AFC1A /* LaunchScreen.storyboard in Resources */,
 				1687DAE720A00E4B009AFC1A /* Assets.xcassets in Resources */,
 				1687DAE520A00E4A009AFC1A /* Main.storyboard in Resources */,
+				16F290F820A058E5008E9F9C /* TaskTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,9 +174,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1687DAE220A00E4A009AFC1A /* ViewController.swift in Sources */,
+				1687DAE220A00E4A009AFC1A /* IRViewController.swift in Sources */,
+				16F290F720A058E5008E9F9C /* TaskTableViewCell.swift in Sources */,
 				1687DAF220A00F87009AFC1A /* Resnet50.mlmodel in Sources */,
+				1687DAFF20A03B96009AFC1A /* DetailViewController.swift in Sources */,
 				1687DAE020A00E4A009AFC1A /* AppDelegate.swift in Sources */,
+				16F290FA20A065CE008E9F9C /* InternetSettingsViewController.swift in Sources */,
+				1687DAFD20A02229009AFC1A /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
