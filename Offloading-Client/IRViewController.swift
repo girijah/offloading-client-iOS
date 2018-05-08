@@ -22,6 +22,9 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
     var switcher = 0   // 1 - Local Execution, 2 - Remote Execution, 0 - Not yet set
     
+    // creates a new capture session
+    let captureSession = AVCaptureSession()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,7 +54,7 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //        let controller = storyboard.instantiateViewController(withIdentifier: "Settings")
 //        self.present(controller, animated: true, completion: nil)
-        
+        captureSession.stopRunning()
         performSegue(withIdentifier: "showMain", sender: nil)
     }
     
@@ -70,9 +73,6 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     }
     
     func setupCaptureSession() {
-        
-        // creates a new capture session
-        let captureSession = AVCaptureSession()
         
         // search for available capture devices
         let availableDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices
@@ -185,13 +185,11 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
 //            }
 //
 //            dataTask.resume()
-            
         }
         else {
             // pop up undefined error
             self.popUpTaskExecutionUndefinedErrorMessage()
         }
-        
     }
     
     func popUpTaskExecutionUndefinedErrorMessage() {
