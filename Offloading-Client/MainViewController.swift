@@ -42,6 +42,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     @objc func respondToSwipeLeft(gesture: UIGestureRecognizer) {
+        
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //        let controller = storyboard.instantiateViewController(withIdentifier: "Home")
 //        self.present(controller, animated: true, completion: nil)
@@ -98,6 +99,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             else if self.isOffloadingEnabled == false {
                 vc.switcher = 1
             }
+        }
+        else if segue.identifier == "showNetwork" {
+            let viewCont = segue.destination as! InternetSettingsViewController
+            viewCont.cameFrom = 1
         }
     }
     

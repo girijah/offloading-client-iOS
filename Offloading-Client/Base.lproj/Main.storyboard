@@ -92,7 +92,7 @@
         <!--Internet Settings View Controller-->
         <scene sceneID="MDn-w8-ght">
             <objects>
-                <viewController id="Lzl-Qn-eOS" customClass="InternetSettingsViewController" customModule="Offloading_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Internet" id="Lzl-Qn-eOS" customClass="InternetSettingsViewController" customModule="Offloading_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YKi-1x-cDE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -285,7 +285,7 @@
         <image name="blueSideImage" width="368" height="722"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Wue-2u-sF1"/>
+        <segue reference="bf9-6X-koG"/>
         <segue reference="3Qc-h1-Daa"/>
     </inferredMetricsTieBreakers>
 </document>

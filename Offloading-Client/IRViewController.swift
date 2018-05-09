@@ -14,11 +14,11 @@ import BTE
 class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     @IBOutlet weak var objectLabel: UILabel!
-    let ipAddress: String! = nil
-    let port: Int! = nil
+    var ipAddress: String = ""
+    var port: String = ""
     
     private let kIR_ENDPOINT = "/recognizeImage"
-    var endPoint: String!
+    var endPoint: String = ""
     private let urlSession = URLSession.shared
     
     var switcher = 0   // 1 - Local Execution, 2 - Remote Execution, 0 - Not yet set
@@ -43,37 +43,48 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         swipeTopGesture.direction = UISwipeGestureRecognizerDirection.up
         self.view.addGestureRecognizer(swipeTopGesture)
         
+        setSwicher()
+        
+        if UserDefaults.standard.value(forKey: InternetSettingsViewController.kIP_ADDRESS) != nil && UserDefaults.standard.value(forKey: InternetSettingsViewController.kPORT) != nil {
+            self.ipAddress = String(describing: UserDefaults.standard.value(forKey: InternetSettingsViewController.kIP_ADDRESS)!)
+            
+            self.port = String(describing: UserDefaults.standard.value(forKey: InternetSettingsViewController.kPORT)!)
+            
+            endPoint = "http://\(ipAddress):\(port)\(kIR_ENDPOINT)"
+            
+            print("The Image Recognition End point : ", endPoint)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setSwicher()
+        startRunningCaptureSession()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        stopRunningCaptureSession()
+    }
+    
+    @objc func respondToSwipeRight(gesture: UIGestureRecognizer) {
+        performSegue(withIdentifier: "showMain", sender: nil)
+    }
+    
+    @objc func respondToSwipeTop(gesture: UIGestureRecognizer) {
+        performSegue(withIdentifier: "showDetail", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+   
+    }
+    
+    func setSwicher() {
+        
         if UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING) == true {
             self.switcher = 2
         }
         else if UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING) == false {
             self.switcher = 1
         }
-        
-        endPoint = "http://\(String(describing: UserDefaults.standard.value(forKey: InternetSettingsViewController.kIP_ADDRESS)!)):\(String(describing: UserDefaults.standard.value(forKey: InternetSettingsViewController.kPORT)!))\(kIR_ENDPOINT)"
-        print("The Image Recognition End point : ", endPoint!)
-    }
-    
-    @objc func respondToSwipeRight(gesture: UIGestureRecognizer) {
-        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //        let controller = storyboard.instantiateViewController(withIdentifier: "Settings")
-        //        self.present(controller, animated: true, completion: nil)
-        captureSession.stopRunning()
-        performSegue(withIdentifier: "showMain", sender: nil)
-    }
-    
-    @objc func respondToSwipeTop(gesture: UIGestureRecognizer) {
-        //                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //                let controller = storyboard.instantiateViewController(withIdentifier: "Detail")
-        //                self.present(controller, animated: true, completion: nil)
-        
-        performSegue(withIdentifier: "showDetail", sender: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //        let mainViewController = segue.destination as! MainViewController
-        //            mainViewController.
-        //            print("")
     }
     
     func setupCaptureSession() {
@@ -100,7 +111,30 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         previewLayer.frame = view.frame
         view.layer.addSublayer(previewLayer)
         
-        captureSession.startRunning()
+    }
+    
+    func startRunningCaptureSession() {
+        //check decision is remote
+            // check remote is set
+        if switcher == 2 {
+
+            if  InternetSettingsViewController.isIPAddressCorrect {
+                captureSession.startRunning()
+            }
+            else {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let controller = storyboard.instantiateViewController(withIdentifier: "Internet") as! InternetSettingsViewController
+                controller.cameFrom = 2
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
+        else if switcher == 1 {
+            captureSession.startRunning()
+        }
+    }
+    
+    func stopRunningCaptureSession() {
+         captureSession.stopRunning()
     }
     
     // called everytime a frame is captured
@@ -124,12 +158,12 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             
         }
         else if switcher == 2 {
-            
+            print("still capturing ...")
             let stringSampleBuffer = "\(sampleBuffer)"
             
             let parameters = ["bufferParameter" : stringSampleBuffer]
             
-            guard let urlToExecute = URL(string: endPoint!) else {
+            guard let urlToExecute = URL(string: endPoint) else {
                 return
             }
             
@@ -154,13 +188,13 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
                 
                 do {
                     let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                    guard let object = jsonResponse?["recognizedImage"] else {
+                    guard let object = jsonResponse?["recognizedImage"] as? String else {
                         return
                     }
                     
                     DispatchQueue.main.async {[unowned self] in
                         self.objectLabel.text = "\(object)"
-                        
+                        print("Identified object is : ", object)
                     }
                 }
                 catch {
@@ -178,10 +212,19 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
     func popUpTaskExecutionUndefinedErrorMessage() {
         let alertController = UIAlertController(title: "Task Execution", message: "Selection undefined!", preferredStyle: .alert)
-        let cancelAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (UIAlertAction) in
+        let okAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (UIAlertAction) in
             print("Selection undefined!")
         })
-        alertController.addAction(cancelAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func popUpConnectToRemote() {
+        let alertController = UIAlertController(title: "Remote Connection", message: "Please enter remote address.", preferredStyle: .alert)
+        let okAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (UIAlertAction) in
+            print("Remote connection set up requested!")
+        })
+        alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
     }
     

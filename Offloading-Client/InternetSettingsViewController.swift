@@ -26,6 +26,8 @@ class InternetSettingsViewController: UIViewController {
     var endPoint: String!
     var ip: String!
     var port: String!
+    var cameFrom: Int! // 1 - Main View, 2 - IR View
+    static var isIPAddressCorrect: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +40,7 @@ class InternetSettingsViewController: UIViewController {
         self.view.addGestureRecognizer(tap)
         
         ip = UserDefaults.standard.object(forKey: InternetSettingsViewController.kIP_ADDRESS) as? String ?? ""
-        port = UserDefaults.standard.object(forKey: InternetSettingsViewController.kPORT) as? String ?? ""
+        port = UserDefaults.standard.object(forKey: InternetSettingsViewController.kPORT) as? String ?? "8181"
         
         self.ipAddressTextField.text! = ip!
         self.portTextField.text! = port!
@@ -55,9 +57,17 @@ class InternetSettingsViewController: UIViewController {
         
         performSegue(withIdentifier: "showMainFromInternet", sender: nil)
     }
+    
+    func saveEnteredRemoteAddress() {
+        // Successful endpoint saved to UserDefaults
+        UserDefaults.standard.set(ipAddressTextField.text!, forKey: InternetSettingsViewController.kIP_ADDRESS)
+        UserDefaults.standard.set(portTextField.text!, forKey: InternetSettingsViewController.kPORT)
+    }
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
         endPoint = "http://\(String(describing: ipAddressTextField.text!)):\(String(describing: portTextField.text!))\(InternetSettingsViewController.kREMOTE_CONNECTIVITY_ENDPOINT)"
+        
+        self.saveEnteredRemoteAddress()
         
         self.connectButton.setTitle("", for: UIControlState.normal)
         self.connectButton.loadingIndicator(true)
@@ -80,9 +90,7 @@ class InternetSettingsViewController: UIViewController {
             return
         }
         
-        // Successful endpoint saved to UserDefaults
-        UserDefaults.standard.set(ipAddressTextField.text!, forKey: InternetSettingsViewController.kIP_ADDRESS)
-        UserDefaults.standard.set(portTextField.text!, forKey: InternetSettingsViewController.kPORT)
+        InternetSettingsViewController.isIPAddressCorrect = true
         
         var webRequest = URLRequest(url: urlToExecute)
         webRequest.httpMethod = "POST"
@@ -143,8 +151,15 @@ class InternetSettingsViewController: UIViewController {
             self.connectButton.loadingIndicator(false)
             self.connectButton.setTitle("Connected!", for: UIControlState.normal)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // change 2 to desired number of seconds
-                self.performSegue(withIdentifier: "showMainFromInternet", sender: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // 1 second delay
+                if self.cameFrom == 1 {
+                    self.performSegue(withIdentifier: "showMainFromInternet", sender: nil)
+                }
+                else if self.cameFrom == 2 {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let controller = storyboard.instantiateViewController(withIdentifier: "Home") as! IRViewController
+                    self.present(controller, animated: true, completion: nil)
+                }
             }
         }
         else if remoteAvailability == 3 {
