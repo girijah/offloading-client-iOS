@@ -117,8 +117,10 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         //check decision is remote
             // check remote is set
         if switcher == 2 {
-
-            if  InternetSettingsViewController.isIPAddressCorrect {
+            let textFieldIPAddress = UserDefaults.standard.object(forKey: InternetSettingsViewController.kIP_ADDRESS) as? String
+            let lastconnectedIPAddress = UserDefaults.standard.object(forKey: InternetSettingsViewController.kLAST_CONNECTED_IP_ADDRESS) as? String
+            
+            if  textFieldIPAddress != nil && lastconnectedIPAddress != nil && textFieldIPAddress == lastconnectedIPAddress {
                 captureSession.startRunning()
             }
             else {

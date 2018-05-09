@@ -11,6 +11,7 @@ import UIKit
 class InternetSettingsViewController: UIViewController {
     
     static let kREMOTE_CONNECTIVITY_ENDPOINT = "/test"
+    static let kLAST_CONNECTED_IP_ADDRESS = "LAST_CONNECTED_IP_ADDRESS"
     static let kIP_ADDRESS = "IP"
     static let kPORT = "PORT"
     
@@ -27,7 +28,7 @@ class InternetSettingsViewController: UIViewController {
     var ip: String!
     var port: String!
     var cameFrom: Int! // 1 - Main View, 2 - IR View
-    static var isIPAddressCorrect: Bool = false
+    static var lastConnectedIPAddress: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,10 @@ class InternetSettingsViewController: UIViewController {
         let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeLeft))
         swipeLeftGesture.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(swipeLeftGesture)
+        
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeRight))
+        swipeRightGesture.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRightGesture)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector( viewTapped))
         self.view.addGestureRecognizer(tap)
@@ -51,15 +56,27 @@ class InternetSettingsViewController: UIViewController {
     }
 
     @objc func respondToSwipeLeft(gesture: UIGestureRecognizer) {
-        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //        let controller = storyboard.instantiateViewController(withIdentifier: "Settings")
-        //        self.present(controller, animated: true, completion: nil)
         
-        performSegue(withIdentifier: "showMainFromInternet", sender: nil)
+        if self.cameFrom == 2 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "Home")
+            self.present(controller, animated: true, completion: nil)
+        }
+        else {
+            performSegue(withIdentifier: "showMainFromInternet", sender: nil)
+        }
+    }
+    
+     @objc func respondToSwipeRight(gesture: UIGestureRecognizer) {
+        if cameFrom == 2 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "Settings")
+            self.present(controller, animated: true, completion: nil)
+        }
     }
     
     func saveEnteredRemoteAddress() {
-        // Successful endpoint saved to UserDefaults
+        
         UserDefaults.standard.set(ipAddressTextField.text!, forKey: InternetSettingsViewController.kIP_ADDRESS)
         UserDefaults.standard.set(portTextField.text!, forKey: InternetSettingsViewController.kPORT)
     }
@@ -89,8 +106,6 @@ class InternetSettingsViewController: UIViewController {
             self.connectionStatusUpdate()
             return
         }
-        
-        InternetSettingsViewController.isIPAddressCorrect = true
         
         var webRequest = URLRequest(url: urlToExecute)
         webRequest.httpMethod = "POST"
@@ -124,11 +139,13 @@ class InternetSettingsViewController: UIViewController {
                     if result == "hello from remote" {
                         self.remoteAvailability = 2
                         self.connectionStatusUpdate()
+                        
+                        // Successfully connected IP address saved to UserDefaults for user's comfortability
+                        UserDefaults.standard.set(self.ipAddressTextField.text!, forKey: InternetSettingsViewController.kLAST_CONNECTED_IP_ADDRESS)
                     }
                     else {
                         self.remoteAvailability = 3
                         self.connectionStatusUpdate()
-
                     }
                 }
             }

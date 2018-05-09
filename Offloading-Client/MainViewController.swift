@@ -145,20 +145,20 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.switchControl.tag = indexPath.section
             
             if self.isManualEnabled == true {
-                cell.statusLabel.text = "Manual"
+                cell.statusLabel.text = "- Manual"
             }
             else if self.isManualEnabled == false {
                 cell.switchControl.isOn = false
-                cell.statusLabel.text = "Automatic"
+                cell.statusLabel.text = "- Automatic"
             }
             else { // case: isOffloadingEnabled == nil
                 if cell.switchControl.isOn {
                     self.isManualEnabled = true
-                    cell.statusLabel.text = "Manual"
+                    cell.statusLabel.text = "- Manual"
                 }
                 else if cell.switchControl.isOn == false {
                     self.isManualEnabled = false
-                    cell.statusLabel.text = "Automatic"
+                    cell.statusLabel.text = "- Automatic"
                 }
             }
             
