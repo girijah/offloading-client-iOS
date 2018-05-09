@@ -13,7 +13,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     static let kIS_OFFLOADING = "OFFLOADING"
     static let kIS_MANUAL_DECISION = "MANUAL DECISION"
     
-    let tableViewSectionTitles = ["Offloading Settings", "Task Execution"]
+    let tableViewSectionTitles = ["Decision Making", "Execution Location"]
     let tableViewFirstSectionTitles = ["Image Recognition"]
     let tableViewSecondSectionTitles = ["Manual/ Automatic"]
     
@@ -35,6 +35,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
         isOffloadingEnabled = UserDefaults.standard.bool(forKey: MainViewController.kIS_OFFLOADING)
         isManualEnabled = UserDefaults.standard.bool(forKey: MainViewController.kIS_MANUAL_DECISION)
+        
+        tasksTableView.allowsSelection = false
+        tasksTableView.separatorStyle = .none
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -193,11 +196,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showHome", sender: nil)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        performSegue(withIdentifier: "showHome", sender: nil)
+//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80.0
+        return 110.0
     }
 }
