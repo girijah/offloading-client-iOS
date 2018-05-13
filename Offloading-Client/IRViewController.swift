@@ -23,6 +23,8 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
     var switcher = 0   // 1 - Local Execution, 2 - Remote Execution, 0 - Not yet set
     
+    var ticks: Int = 0
+    
     // creates a new capture session
     let captureSession = AVCaptureSession()
     
@@ -54,6 +56,7 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             
             print("The Image Recognition End point : ", endPoint)
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +99,8 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         do {
             if let captureDevice = availableDevices.first {
                 captureSession.addInput(try AVCaptureDeviceInput(device: captureDevice))
+                configureCameraFrameRate(device: captureDevice)
+
             }
         } catch {
             print(error.localizedDescription)
@@ -139,8 +144,24 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
          captureSession.stopRunning()
     }
     
+    func configureCameraFrameRate( device: AVCaptureDevice) {
+
+            do {
+                try device.lockForConfiguration()
+                device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 2)
+                device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 2)
+                device.unlockForConfiguration()
+            }
+            catch let error{
+                print(error.localizedDescription)
+            }
+    }
+    
     // called everytime a frame is captured
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        
+        self.ticks = self.ticks + 1
+        print ("counting..", self.ticks)
         
         if switcher == 1 {
             
@@ -160,10 +181,19 @@ class IRViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             
         }
         else if switcher == 2 {
-            print("still capturing ...")
-            let stringSampleBuffer = "\(sampleBuffer)"
+            print("capturing ...")
+//            let stringSampleBuffer = "\(sampleBuffer)"
             
-            let parameters = ["bufferParameter" : stringSampleBuffer]
+            let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+            CVPixelBufferLockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+            let bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer!)
+            let height = CVPixelBufferGetHeight(imageBuffer!)
+            let src_buff = CVPixelBufferGetBaseAddress(imageBuffer!)
+            let data = NSData(bytes: src_buff, length: bytesPerRow * height)
+            CVPixelBufferUnlockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+            
+            
+            let parameters = ["bufferParameter" : data]
             
             guard let urlToExecute = URL(string: endPoint) else {
                 return
