@@ -3,11 +3,15 @@ Offloading enabled iOS application
 
 
 Requirements
+
 BTE framework requires iOS 11.0+, although iOS 11.4.1 support hasn't been tested in a while.
 
+
 Installation
+
 * BTE framework comes attached with the testing application
 * Just drag BTE.framework into your project. Method calls support is given in the below list.
+
 
 Methods
 
@@ -18,6 +22,7 @@ Methods
 * Work less and do more!!
 
 Please use the issues tab for further inquiry, hope to provide the best solution at earliest. 
+
 
 MIT License
 
